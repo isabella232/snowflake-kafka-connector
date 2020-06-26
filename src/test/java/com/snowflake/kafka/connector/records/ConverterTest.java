@@ -150,10 +150,14 @@ public class ConverterTest
     Map<String, ?> config = Collections.singletonMap("schemas.enable", false);
     jsonConverter.configure(config, false);
     Map<String, Object> jsonMap = new HashMap<>();
-    // Value will map to int64
-    jsonMap.put("test3", Integer.MAX_VALUE);
+    // Value will map to int64.
+    jsonMap.put("test", Integer.MAX_VALUE);
     SchemaAndValue schemaAndValue =
         jsonConverter.toConnectData("test", mapper.writeValueAsBytes(jsonMap));
-    RecordService.convertToJson(schemaAndValue.schema(), schemaAndValue.value());
+    JsonNode result = RecordService.convertToJson(schemaAndValue.schema(), schemaAndValue.value());
+
+    ObjectNode expected = mapper.createObjectNode();
+    expected.put("test", Integer.MAX_VALUE);
+    assert expected.toString().equals(result.toString());
   }
 }
