@@ -15,8 +15,8 @@ include ./mk-include/cc-end.mk
 .PHONY: cc-connect-snowflake-sink
 cc-connect-snowflake-sink:
 	[ -d kafka-connect-snowflake ] || git clone git@github.com:confluentinc/snowflake-kafka-connector.git kafka-connect-snowflake
-	git -C kafka-connect-snowflake checkout master
-	git -C kafka-connect-snowflake pull origin master
+	git -C kafka-connect-snowflake checkout upgrade_jdbc_driver
+	git -C kafka-connect-snowflake pull origin upgrade_jdbc_driver
 	mvn -f kafka-connect-snowflake/pom_confluent.xml -am -Dconnect.component.version=ccloud -Dmaven.test.skip=true clean package
 	docker build \
 		-t confluentinc/cc-connect-snowflake-sink:$(IMAGE_VERSION) \
